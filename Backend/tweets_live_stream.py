@@ -20,7 +20,7 @@ class StreamListener(TwythonStreamer):
 		try:
 			print(status)
 			StreamListener.tweet_counter += 1
-			if StreamListener.tweet_counter >= 500:
+			if StreamListener.tweet_counter >= 50:
 				self.disconnect()
 				return True
 			if not ("text" in status or "extended_tweet" in status):

@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-
+import tweets_live_stream as tweets_e
 import data_analyzer as data_analyzer
 
 app = Flask(__name__)
@@ -18,7 +18,7 @@ def live_stream():
 	unique_id = req_data['unique_id']
 	try:
 		# news_e.get_data_from_news_api(unique_id)
-		# tweets_e.get_data_from_twitter(unique_id)
+		tweets_e.get_data_from_twitter(unique_id)
 		return jsonify({"code": "200", "data": data_analyzer.start_data_analysis(unique_id)})
 	except Exception as exception:
 		print("Exception occurred while live streaming: " + str(exception))
