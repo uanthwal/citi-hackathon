@@ -12,6 +12,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { AppService } from './app.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ChartsModule } from 'ng2-charts';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,6 +29,7 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    ChartsModule
   ],
   entryComponents: [ErrorDialogComponent],
   providers: [AppService],

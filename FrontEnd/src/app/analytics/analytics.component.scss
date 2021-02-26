@@ -1,0 +1,55 @@
+.charts-container {
+  display: flex;
+  margin: 4% 0;
+  .chart-1 {
+    flex: 1;
+    margin: 1.5%;
+    background: linear-gradient(to right, #0ac282, #0df3a3);
+  }
+  .chart-2 {
+    flex: 1;
+    margin: 1.5%;
+    background: linear-gradient(to right, #01a9ac, #01dbdf);
+  }
+}
+.asset-class-container {
+  ul {
+    font-size: 26px;
+    list-style: none;
+    padding-left: 0px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin: 2%;
+    li {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 5px;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+      flex: 1;
+      margin: 1%;
+      height: 100px;
+      &:first-child {
+        background-image: radial-gradient(
+          circle 248px at center,
+          #16d9e3 0%,
+          #30c7ec 47%,
+          #46aef7 100%
+        );
+      }
+      &:nth-child(2) {
+        background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
+      }
+      &:nth-child(3) {
+        background-image: linear-gradient(-20deg, #2b5876 0%, #4e4376 100%);
+      }
+      &:nth-child(4) {
+        background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+      }
+    }
+  }
+}
