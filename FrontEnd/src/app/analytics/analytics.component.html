@@ -1,12 +1,22 @@
 <div>
-    <div class="asset-class-container">
-        <ul>
-            <li *ngFor="let ac of tilesData">
-                {{ac}}
-            </li>
-        </ul>
+  <div *ngIf="showLoader" class="loader">
+    <div>
+      <img src="../../assets/main-loader.gif" alt="loader-icon" />
     </div>
-  <div class="charts-container">
+  </div>
+  <div class="stop-streaming">
+    <button [class.disabled]="!isLiveStreamOn" (click)="onClickStopStreaming()">
+      STOP STREAM
+    </button>
+  </div>
+  <div *ngIf="!showLoader" class="asset-class-container">
+    <ul>
+      <li *ngFor="let ac of tilesData">
+        {{ ac | uppercase }}
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="!showLoader" class="charts-container">
     <div class="chart-1">
       <canvas
         baseChart
@@ -34,5 +44,4 @@
       </canvas>
     </div>
   </div>
- 
 </div>

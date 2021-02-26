@@ -13,8 +13,7 @@ import { Color } from "ng2-charts";
 export class AnalyticsComponent implements OnInit {
   tilesData = [];
   uniqueId: string;
-  showChart: boolean = false;
-  showChartWF: boolean = false;
+  showLoader: boolean = false;
   barChartData = [];
   barChartLabels = [];
   barChartDataWF = [];
@@ -28,13 +27,16 @@ export class AnalyticsComponent implements OnInit {
     backgroundColor: ["#FF6384", "#4BC0C0", "#FFCE56", "#E7E9ED", "#36A2EB"],
   };
   barChartColors: Color[] = [{ backgroundColor: "white" }];
-
+  isLiveStreamOn = false;
+  poller;
+  previousResponse;
   constructor(private _route: ActivatedRoute, private _appService: AppService) {
     this._route.queryParamMap.subscribe((params) => {
       let paramObject = { ...params.keys, ...params };
       if (paramObject["params"]["load_type"] == "live") {
         this.uniqueId = uuidv4();
-        this.startLiveStream();
+        this.startLiveStream(this.uniqueId);
+        this.startPoller();
       } else {
         this.uniqueId = "historical";
         this.getPreviousTrends();
@@ -44,88 +46,102 @@ export class AnalyticsComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  onClickStopStreaming() {
+    this.isLiveStreamOn = false;
+    clearInterval(this.poller);
+  }
+
+  startPoller() {
+    this.poller = setInterval((_) => {
+      this.isLiveStreamOn = true;
+      this.startLiveStream(uuidv4());
+    }, 8000);
+  }
+
   getPreviousTrends() {
+    this.showLoader = this.isLiveStreamOn ? false : true;
     this._appService.getPreviousTrends().subscribe((response) => {
-      this.prepareChartData(response);
+      this.prepareChartData(response["data"]);
+      this.showLoader = false;
     });
   }
 
-  startLiveStream() {
+  startLiveStream(uniqueId) {
+    this.showLoader = this.isLiveStreamOn ? false : true;
     let payload = {
-      unique_id: this.uniqueId,
+      unique_id: uniqueId,
     };
-
     this._appService.getLiveStreamFeed(payload).subscribe((response) => {
-      this.prepareChartData(response);
+      // Uncomment the below line to get the data from the mocks
+      // let response = this._appService.getMockData();
+      this.prepareChartData(response["data"]);
+      this.previousResponse = response["data"];
+      this.showLoader = false;
     });
   }
 
   prepareChartData(response) {
-    // let response = this.getDummyData();
+    if (this.isLiveStreamOn && this.previousResponse) {
+      let prevAssets = this.previousResponse["asset_word"];
+      for (let key in response["asset_word"]) {
+        if (key in prevAssets) {
+          response["asset_word"][key] = [
+            response["asset_word"][key][0] + prevAssets[key][0],
+          ];
+        }
+      }
+
+      let prevWords = this.previousResponse["word_frequency"];
+      for (let key in response["word_frequency"]) {
+        if (key in prevWords) {
+          response["word_frequency"][key] = [
+            response["word_frequency"][key][0] + prevWords[key][0],
+          ];
+        }
+      }
+    }
     let dataObj = [];
     let dataLabel = [];
-    let assetWordList = response["data"]["asset_word"];
+    let assetWordList = response["asset_word"];
     for (let key in assetWordList) {
       dataLabel.push(key);
       dataObj.push(assetWordList[key][0]);
     }
     this.barChartLabels = dataLabel;
     this.barChartData = [{ data: dataObj, label: "Top Assets" }];
-    this.showChart = true;
 
     let dataObjWF = [];
     let dataLabelWF = [];
-    let assetWordListWF = response["data"]["word_frequency"];
+    let assetWordListWF = response["word_frequency"];
     for (let key in assetWordListWF) {
       dataLabelWF.push(key);
       dataObjWF.push(assetWordListWF[key][0]);
     }
     this.barChartLabelsWF = dataLabelWF;
     this.barChartDataWF = [{ data: dataObjWF, label: "Top 20 Words" }];
-    this.showChartWF = true;
-    this.tilesData = ["Equities1", "Equities11", "Equities12", "Equities13"];
+
+    this.tilesData = this.sortAndGetAssetClasses(response["asset_classes"]);
   }
 
-  getDummyData() {
-    let res = {
-      code: "200",
-      data: {
-        asset_word: {
-          apartment: [1],
-          art: [6],
-          bitcoin: [2],
-          brand: [3],
-          credit: [2],
-          ethereum: [2],
-          gold: [1],
-          home: [8],
-          meat: [1],
-          paintings: [1],
-        },
-        word_frequency: {
-          chanyeol: [54],
-          chanyeolseeyousoonchanyeol: [44],
-          chanyeolwe: [45],
-          de: [176],
-          dont: [52],
-          el: [49],
-          en: [61],
-          enhypen: [37],
-          enhypenmembers: [32],
-          exo: [52],
-          im: [53],
-          la: [71],
-          love: [92],
-          na: [39],
-          people: [39],
-          proud: [51],
-          que: [92],
-          un: [33],
-          weareoneexo: [53],
-          ya: [36],
-        },
-      },
-    };
-    return res;
+  sortAndGetAssetClasses(acObj) {
+    var sortable = [];
+    for (var ac in acObj) {
+      sortable.push([ac, acObj[ac]]);
+    }
+    sortable.sort(function (a, b) {
+      return b[1] - a[1];
+    });
+    let aClasses = sortable.map((_) => {
+      return _[0];
+    });
+    if (aClasses.length < 4) {
+      let len = aClasses.length;
+      for (let i = 0; i < 4 - len; i++) {
+        aClasses.push("- NA -");
+      }
+    } else {
+      aClasses = aClasses.slice(0, 4);
+    }
+    return aClasses;
   }
 }
