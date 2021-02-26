@@ -3,7 +3,6 @@ import itertools
 import os
 import re
 import warnings
-from os import walk
 import nltk
 import nltk.data
 import pandas as pd
@@ -31,8 +30,8 @@ def get_current_file_df(unique_id):
 		json_pd = pd.read_json(unique_id + ".json")
 	if os.path.isfile(unique_id + ".csv"):
 		csv_pd = pd.read_csv(unique_id + ".csv", sep="\n")
-	wordstring = json_pd.append(csv_pd, ignore_index=True)
-	return start_data_processing(wordstring)
+	word_string = json_pd.append(csv_pd, ignore_index=True)
+	return start_data_processing(word_string)
 	
 	
 def start_data_processing(wordstring):
@@ -61,7 +60,6 @@ def start_data_processing(wordstring):
 	list(stop_words)
 	tokens_without_sw = [word for word in text_tokens if not word in stop_words]
 	e = convert_string_to_list(tokens_without_sw)
-	print(e)
 	all_words_nsw = list(itertools.chain(tokens_without_sw))
 	counts_nsw_1 = collections.Counter(all_words_nsw)
 	response_object = {}
@@ -71,39 +69,52 @@ def start_data_processing(wordstring):
 	
 	response_object['word_frequency'] = clean_tweets_nsw_1.set_index('words').T.to_dict('list')
 	asset_n = pd.read_csv("asset_classes.csv")
+	
 	asset_list = asset_n.Asset.to_list()
 	common = [word for word in tokens_without_sw if word in asset_list]
 	d = convert_string_to_list(common)
 	all_words_nsw = list(itertools.chain(d))
 	counts_nsw = collections.Counter(all_words_nsw)
 	counts_nsw.most_common(1000)
-	
+
 	clean_tweets_nsw = pd.DataFrame(counts_nsw.most_common(10),
 	                                columns=['words', 'count'])
 	response_object['asset_word'] = clean_tweets_nsw.set_index('words').T.to_dict('list')
-	print(response_object)
+	
+	df1 = pd.DataFrame(common, columns=['Asset'])
+	df2 = df1.merge(asset_n, on='Asset', how='left')
+	all_words_nsw = list(itertools.chain(df2['Asset']))
+	counts_nsw = collections.Counter(all_words_nsw)
+	counts_nsw.most_common(1000)
+	all_words_nsw = list(itertools.chain(df2['Asset Classes']))
+	counts_nsw = collections.Counter(all_words_nsw)
+	counts_nsw.most_common(1000)
+	clean_tweets_nsw = pd.DataFrame(counts_nsw.most_common(10),
+	                                columns=['words', 'count'])
+	
+	response_object['asset_classes'] = clean_tweets_nsw.set_index('words').T.to_dict('list')
+	# print(response_object)
 	return response_object
 
 
 def start_data_analysis(unique_id):
 	if unique_id == 'historical':
+		print("Going for historical analysis")
 		files_list = os.listdir()
-		print(files_list)
 		main_df = pd.DataFrame()
 		for filename in files_list:
 			if (filename.endswith(".json") or filename.endswith(".csv")) and ('asset_classes' not in filename):
-				# curr_file_df = pd.DataFrame()
 				if filename.endswith(".json"):
 					curr_file_df = pd.read_json(filename)
 				if filename.endswith(".csv"):
 					curr_file_df = pd.read_csv(filename, sep="\n")
-				print(curr_file_df)
 				main_df = main_df.append(curr_file_df)
-				print(main_df)
 		return start_data_processing(main_df)
 	else:
-		# result =  get_current_file_df(unique_id)
-		result = {'asset_word':{}}
+		print("Going for live fetch analysis")
+		result =  get_current_file_df(unique_id)
 		if not result['asset_word']:
 			return start_data_analysis('historical')
 		return result
+
+# get_current_file_df('a0334e1f-f524-49d9-be85-f1d442b70d16')
