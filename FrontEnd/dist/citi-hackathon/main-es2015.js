@@ -654,16 +654,23 @@ class AppComponent {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "URL_CONFIG", function() { return URL_CONFIG; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getConfigs", function() { return getConfigs; });
+let protocol = location.protocol + "//" + location.host;
 var URL_CONFIG = {
     BASE_URL: getConfigs()["BASE_URL"],
     LIVE_STREAM_FEED: ":5000/live-stream",
     GET_PREV_TRENDS: ":5000/historical-data",
 };
 function getConfigs() {
-    return {
-        BASE_URL: "http://localhost",
-        ADMIN_ICON: "../assets/admin.png",
-    };
+    if (protocol == "http://localhost:4200") {
+        return {
+            BASE_URL: "http://localhost"
+        };
+    }
+    else {
+        return {
+            BASE_URL: "http://ec2-23-22-153-152.compute-1.amazonaws.com"
+        };
+    }
 }
 
 
