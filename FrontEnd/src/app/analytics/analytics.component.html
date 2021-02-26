@@ -1,1 +1,38 @@
-<p>analytics works!</p>
+<div>
+    <div class="asset-class-container">
+        <ul>
+            <li *ngFor="let ac of tilesData">
+                {{ac}}
+            </li>
+        </ul>
+    </div>
+  <div class="charts-container">
+    <div class="chart-1">
+      <canvas
+        baseChart
+        [datasets]="barChartDataWF"
+        [labels]="barChartLabelsWF"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [colors]="barChartColors"
+        [chartType]="barChartType"
+      >
+      </canvas>
+    </div>
+    <div class="chart-2">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [colors]="barChartColors"
+        [chartType]="barChartType"
+      >
+      </canvas>
+    </div>
+  </div>
+ 
+</div>
