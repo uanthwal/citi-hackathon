@@ -151,4 +151,47 @@ export class AppService {
     };
     return mappongObject;
   }
+
+  getMockData() {
+    let res = {
+      code: "200",
+      data: {
+        asset_word: {
+          apartment: [1],
+          art: [6],
+          bitcoin: [2],
+          brand: [3],
+          credit: [2],
+          ethereum: [2],
+          gold: [1],
+          home: [8],
+          meat: [1],
+          paintings: [1],
+        },
+        word_frequency: {
+          chanyeol: [54],
+          chanyeolseeyousoonchanyeol: [44],
+          chanyeolwe: [45],
+          de: [176],
+          dont: [52],
+          el: [49],
+          en: [61],
+          enhypen: [37],
+          enhypenmembers: [32],
+          exo: [52],
+          im: [53],
+          la: [71],
+          love: [92],
+          na: [39],
+          people: [39],
+          proud: [51],
+          que: [92],
+          un: [33],
+          weareoneexo: [53],
+          ya: [36],
+        },
+      },
+    };
+    return res;
+  }
 }

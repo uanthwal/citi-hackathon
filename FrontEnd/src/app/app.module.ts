@@ -7,9 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './lib-modules/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 import { AppService } from './app.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
@@ -18,20 +16,17 @@ import { ChartsModule } from 'ng2-charts';
   declarations: [
     AppComponent,
     HomeComponent,
-    AnalyticsComponent,
-    ErrorDialogComponent,
+    AnalyticsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     ChartsModule
   ],
-  entryComponents: [ErrorDialogComponent],
   providers: [AppService],
   bootstrap: [AppComponent],
 })

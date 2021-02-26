@@ -1,5 +1,3 @@
-let protocol = location.protocol + "//" + location.host;
-
 export var URL_CONFIG = {
   BASE_URL: getConfigs()["BASE_URL"],
   LIVE_STREAM_FEED: ":5000/live-stream",

@@ -1,3 +1,42 @@
+.loader {
+  background: black;
+  opacity: 0.8;
+  position: absolute;
+  z-index: 9999999;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  div {
+    display: flex;
+    align-items: center;
+    img {
+      border-radius: 50%;
+      height: 250px;
+      width: 250px;
+    }
+  }
+}
+.stop-streaming {
+  padding: 2% 3%;
+  text-align: right;
+  button {
+    width: 150px;
+    padding: 8px 16px;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    background: #ff0844;
+    cursor: pointer;
+    font-size: 16px;
+    &:hover {
+      box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    }
+    &.disabled {
+      background: gray;
+    }
+  }
+}
 .charts-container {
   display: flex;
   margin: 4% 0;
