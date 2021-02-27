@@ -4,6 +4,7 @@ export var URL_CONFIG = {
   BASE_URL: getConfigs()["BASE_URL"],
   LIVE_STREAM_FEED: ":5000/live-stream",
   GET_PREV_TRENDS: ":5000/historical-data",
+  VALIDATE_PASS_FOR_LIVE_STREAM: ":5000/validate-password"
 };
 
 export function getConfigs() {

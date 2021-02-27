@@ -20,6 +20,13 @@ export class AppService {
     );
   }
 
+  validatePasswordForLiveStream(data) {
+    return this.http.post<any>(
+      URL_CONFIG.BASE_URL + URL_CONFIG.VALIDATE_PASS_FOR_LIVE_STREAM,
+      data
+    );
+  }
+
   getAssetClassMapping() {
     let mappongObject = {
       equities: [
