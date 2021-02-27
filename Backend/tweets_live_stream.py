@@ -5,11 +5,12 @@ import re
 
 from twython import TwythonStreamer
 
-news_api_key = ""
-consumer_key = ""
-consumer_secret = ""
-access_key = ""
-access_secret = ""
+# Keys and token
+news_api_key = ''
+consumer_key = ''
+consumer_secret = ''
+access_key = ''
+access_secret = ''
 
 
 class StreamListener(TwythonStreamer):

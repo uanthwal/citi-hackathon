@@ -62,7 +62,8 @@
     text-align: center;
     margin: 2%;
     li {
-      display: flex;
+      display:inline-flex;
+      flex-direction:column;
       justify-content: center;
       align-items: center;
       border-radius: 5px;
@@ -71,7 +72,12 @@
       box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
       flex: 1;
       margin: 1%;
-      height: 100px;
+      height: 150px;
+   
+      .trend-txt {
+        font-size: 16px;
+        font-weight: 600;
+      }
       &:first-child {
         background-image: radial-gradient(
           circle 248px at center,
@@ -89,6 +95,7 @@
       &:nth-child(4) {
         background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
       }
+      
     }
   }
 }

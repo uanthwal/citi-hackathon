@@ -11,6 +11,7 @@ import { Color } from "ng2-charts";
   styleUrls: ["./analytics.component.scss"],
 })
 export class AnalyticsComponent implements OnInit {
+
   tilesData = [];
   uniqueId: string;
   showLoader: boolean = false;
@@ -20,6 +21,15 @@ export class AnalyticsComponent implements OnInit {
   barChartLabelsWF = [];
   barChartOptions: ChartOptions = {
     responsive: true,
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            beginAtZero: true
+          }
+        }
+      ]
+    }
   };
   barChartType: ChartType = "bar";
   barChartLegend = true;
@@ -28,6 +38,7 @@ export class AnalyticsComponent implements OnInit {
   };
   barChartColors: Color[] = [{ backgroundColor: "white" }];
   isLiveStreamOn = false;
+  pollCount = 0;
   poller;
   previousResponse;
   constructor(private _route: ActivatedRoute, private _appService: AppService) {
@@ -47,6 +58,7 @@ export class AnalyticsComponent implements OnInit {
   ngOnInit(): void {}
 
   onClickStopStreaming() {
+    console.log("Stopped Stream");
     this.isLiveStreamOn = false;
     clearInterval(this.poller);
   }
@@ -55,7 +67,7 @@ export class AnalyticsComponent implements OnInit {
     this.poller = setInterval((_) => {
       this.isLiveStreamOn = true;
       this.startLiveStream(uuidv4());
-    }, 8000);
+    }, 4000);
   }
 
   getPreviousTrends() {
@@ -67,6 +79,12 @@ export class AnalyticsComponent implements OnInit {
   }
 
   startLiveStream(uniqueId) {
+    if (this.pollCount > 5) {
+      this.onClickStopStreaming();
+      return;
+    }
+    this.pollCount++;
+    console.log(this.pollCount);
     this.showLoader = this.isLiveStreamOn ? false : true;
     let payload = {
       unique_id: uniqueId,
@@ -96,6 +114,15 @@ export class AnalyticsComponent implements OnInit {
         if (key in prevWords) {
           response["word_frequency"][key] = [
             response["word_frequency"][key][0] + prevWords[key][0],
+          ];
+        }
+      }
+
+      let prevAssetClasses = this.previousResponse["asset_classes"];
+      for (let key in response["asset_classes"]) {
+        if (key in prevAssetClasses) {
+          response["asset_classes"][key] = [
+            response["asset_classes"][key][0] + prevAssetClasses[key][0],
           ];
         }
       }
@@ -137,7 +164,7 @@ export class AnalyticsComponent implements OnInit {
     if (aClasses.length < 4) {
       let len = aClasses.length;
       for (let i = 0; i < 4 - len; i++) {
-        aClasses.push("- NA -");
+        aClasses.push("-");
       }
     } else {
       aClasses = aClasses.slice(0, 4);
