@@ -3,6 +3,9 @@
 ### Description
 Macro Events impact the Business function of CITI  because of its geopolitical volatility and unpredictability. When Macro events trigger the market and have a long-term impact it is considered as a “ Macro Trend “ which has a ripple effect on Financial Markets. Oftentimes, the Potential Impact is realized too late.!
 
+### Application Available on
+http://ec2-23-22-153-152.compute-1.amazonaws.com/
+
 ### Objective
 
 To develop the model which predicts the factors affecting the market movement events ahead of the News Channels across the world.
