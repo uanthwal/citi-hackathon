@@ -35,7 +35,7 @@ def historical_data():
 def validate_password():
 	req_data = request.json
 	password = req_data['password']
-	if password == "teamwe5":
+	if password == "":
 		return jsonify({"code": "200"})
 	return jsonify({"code": "403"})
 
