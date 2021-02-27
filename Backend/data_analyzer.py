@@ -55,12 +55,16 @@ def start_data_processing(wordstring):
 	             'new', 'use', 'should', 'could', 'really', 'see', 'want', 'nice',
 	             'while', 'know', 'free', 'today', 'day', 'always', 'last', 'put', 'live',
 	             'week', 'went', 'wasn', 'was', 'used', 'ugh', 'try', 'kind', 'http', 'much',
-	             'need', 'next', 'app', 'ibm', 'appleevent', 'using', 'rt', 'Rt', 'RT']
+	             'need', 'next', 'app', 'ibm', 'appleevent', 'using', 'rt', 'Rt', 'RT', 'http',
+	             'https', 'www', 'Http', 'Https']
 	stop_words = set(STOPWORDS + stopwords.words('english'))
 	list(stop_words)
 	tokens_without_sw = [word for word in text_tokens if not word in stop_words]
 	e = convert_string_to_list(tokens_without_sw)
 	all_words_nsw = list(itertools.chain(tokens_without_sw))
+	
+	temp_list = [i for i in all_words_nsw if len(i) >= 4]
+	all_words_nsw = temp_list
 	counts_nsw_1 = collections.Counter(all_words_nsw)
 	response_object = {}
 	counts_nsw_1.most_common(1000)
@@ -93,7 +97,7 @@ def start_data_processing(wordstring):
 	                                columns=['words', 'count'])
 	
 	response_object['asset_classes'] = clean_tweets_nsw.set_index('words').T.to_dict('list')
-	# print(response_object)
+	print(response_object)
 	return response_object
 
 
@@ -117,4 +121,4 @@ def start_data_analysis(unique_id):
 			return start_data_analysis('historical')
 		return result
 
-# get_current_file_df('a0334e1f-f524-49d9-be85-f1d442b70d16')
+# get_current_file_df('75ea706d-c4cd-4e78-8f1e-d531e463e311')
