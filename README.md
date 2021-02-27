@@ -28,8 +28,32 @@ Grouping of Events in a Trend which will affect the market.
 ### Landing Page
 ![image](https://user-images.githubusercontent.com/20668283/109375737-0f754e80-788d-11eb-8a1d-1d1c16ca5db4.png)
 
+#### Live Stream Option:
+1. This feature is password protected as there are limitations of free twitter and news api developer account.
+2. Once a valid password is provided, the app polls for livestream of feeds from twitter and news api.
+3. The current configuration makes 1 request every 4 seconds which pulls around 250 news feeds from the internet.
+4. After 6 requests the live stream is forcefully stopped (as twitter and news api may block the account for extracting a large chunk of data within a short span of time).
+
+#### Previous Trends:
+1. Everytime we do a live stream we generate processed and cleaned files.
+2. These cleaned files are used to create the trends whenever user clicks on previous trends option.
+
 ### Visualization Dashboard
 ![image](https://user-images.githubusercontent.com/20668283/109375742-19974d00-788d-11eb-9a19-ca083732bca2.png)
+
+### Local Setup
+#### FrontEnd:
+1. Clone the code on your local system using `git clone https://github.com/uanthwal/citi-hackathon.git`
+2. Navigate to FrontEnd folder
+3. Install all the dependencies using `npm install`
+4. Start the angular app using `ng serve`
+
+#### Backend
+1. As the code is already clone in previous steps, navigate to Backend folder
+2. Install all the dependencies using `pip3 install -r requirements.txt`
+3. Run the python local server using command `python3 data_extractor.py`
+4. App server will be available on `http://localhost:5000/`
+5. NOTE: The twitter and news APIs keys have been removed from the code. In order to make the backend server running the keys are required. 
 
 ### Future Scope
 
@@ -49,8 +73,3 @@ Grouping of Events in a Trend which will affect the market.
 
 
 Got any questions for us? Please drop a mail to one of us, and we would be more than happy to revert. You can find us at mohinderbassi@gmail.com , upendraparsad99@gmail.com , pramila.mani@gmail.com
-
-
-
-
-
