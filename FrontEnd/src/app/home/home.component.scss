@@ -3,7 +3,7 @@
     p {
       text-align: center;
       font-size: 40px;
-      padding: 2%;
+      padding: 25px;
       margin: 2%;
     }
   }
@@ -13,10 +13,14 @@
       margin-left: -120px;
       margin-top: -50px;
       img {
-        width: 50%;
+        width: 616px;
       }
     }
     .button-container {
+      width: 50%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
       button {
         margin: 2%;
         width: 150px;

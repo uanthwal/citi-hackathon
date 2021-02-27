@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppService } from './app.service';
 import { HttpClientModule } from '@angular/common/http';
 import { ChartsModule } from 'ng2-charts';
+import { AuthGuard } from './app.auth-guard';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { ChartsModule } from 'ng2-charts';
     HttpClientModule,
     ChartsModule
   ],
-  providers: [AppService],
+  providers: [AppService, AuthGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
