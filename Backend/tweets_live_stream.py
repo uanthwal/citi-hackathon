@@ -5,11 +5,11 @@ import re
 
 from twython import TwythonStreamer
 
-news_api_key = '052e372641d5495ba87e5d9113730693'
-consumer_key = "9LG9jArKJpLshvfPGU0YUXRrM"
-consumer_secret = "MAZWNQqroy8hzuHUcscWWjqpM0DvybOwx8LTtKWWXqQ0t1CNp5"
-access_key = "2194205245-c05h9IBf3Wo7gLI38g5fiBS5yBIJBAisMEQLIBz"
-access_secret = "RQPLFK8CNqlMv4iRnimWiE7lMGLrLICAEyUu1qOrmD1Cp"
+news_api_key = ""
+consumer_key = ""
+consumer_secret = ""
+access_key = ""
+access_secret = ""
 
 
 class StreamListener(TwythonStreamer):
@@ -20,10 +20,10 @@ class StreamListener(TwythonStreamer):
 		try:
 			print(status)
 			StreamListener.tweet_counter += 1
-			if StreamListener.tweet_counter >= 50:
+			if StreamListener.tweet_counter >= 200:
 				self.disconnect()
 				return True
-			if not ("text" in status or "extended_tweet" in status):
+			if (not ("text" in status or "extended_tweet" in status)) or ("lang" in status and status['lang'] != "en"):
 				StreamListener.tweet_counter -= 1
 				return
 			
@@ -32,6 +32,11 @@ class StreamListener(TwythonStreamer):
 			else:
 				text = status['text']
 			
+			if text.startswith("RT"):
+				splitted_tweet = text.split(":")
+				if len(splitted_tweet) > 0:
+					text = text.split(":")[1]
+					
 			text = re.sub('[^A-Za-z ]+', '', text)
 			with open(self.filename, "a", encoding='utf-8') as f:
 				f.write("%s\n" % (text))
@@ -39,7 +44,6 @@ class StreamListener(TwythonStreamer):
 			print(exception)
 			return True
 			
-	
 	def set_unique_id(self, unique_id):
 		self.filename = unique_id
 	
